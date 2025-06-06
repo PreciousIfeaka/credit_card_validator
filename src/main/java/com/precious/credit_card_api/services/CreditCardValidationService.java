@@ -3,10 +3,18 @@ package com.precious.credit_card_api.services;
 import com.precious.credit_card_api.enums.CardType;
 import com.precious.credit_card_api.enums.CardValidityStatus;
 import com.precious.credit_card_api.models.Card;
+import com.precious.credit_card_api.repositories.CardRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 @Service
+@Data
+@AllArgsConstructor
 public class CreditCardValidationService {
+
+    private final CardRepository cardRepository;
+
     private CardValidityStatus getCardValidity(String cardNumber) {
         int evenSum = 0;
         int oddSum = 0;
@@ -42,6 +50,12 @@ public class CreditCardValidationService {
         int cardLength = cardNumber.length();
         CardValidityStatus cardValidityStatus = this.getCardValidity(cardNumber);
 
-        return new Card(cardType, cardNumber, cardLength, cardValidityStatus);
+        Card card = new Card();
+        card.setCardLength(cardLength);
+        card.setCardType(cardType);
+        card.setCardNumber(cardNumber);
+        card.setValidityStatus(cardValidityStatus);
+
+        return this.cardRepository.save(card);
     }
 }

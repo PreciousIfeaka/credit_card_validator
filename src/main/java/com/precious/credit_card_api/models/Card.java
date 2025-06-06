@@ -2,38 +2,33 @@ package com.precious.credit_card_api.models;
 
 import com.precious.credit_card_api.enums.CardType;
 import com.precious.credit_card_api.enums.CardValidityStatus;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Card {
-    private final CardType cardType;
-    private final String cardNumber;
-    private final int cardLength;
-    private final CardValidityStatus validityStatus;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    public Card(
-            CardType cardType,
-            String cardNumber,
-            int cardLength,
-            CardValidityStatus validityStatus
-    ) {
-        this.cardType = cardType;
-        this.cardNumber = cardNumber;
-        this.cardLength = cardLength;
-        this.validityStatus = validityStatus;
-    }
+    @Enumerated(value = EnumType.STRING)
+    private CardType cardType;
 
-    public CardType getCardType() {
-        return cardType;
-    }
+    @NotNull
+    private String cardNumber;
 
-    public String getCardNumber() {
-        return cardNumber;
-    }
+    @Positive
+    private int cardLength;
 
-    public int getCardLength() {
-        return cardLength;
-    }
-
-    public CardValidityStatus getValidityStatus() {
-        return validityStatus;
-    }
+    @Enumerated(value = EnumType.STRING)
+    private CardValidityStatus validityStatus;
 }
